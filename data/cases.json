@@ -1,1 +1,86 @@
+Case 01 — Consistent Supporting Evidence- Reject
 
+case_id: GEA-001
+
+gene: SYN1
+
+synthetic_variant: SYN1:c.250A>G
+
+context:
+Educational case designed to test whether multiple independent evidence items consistently support the same direction of interpretation.
+
+evidence_items:
+
+Population dataset: variant is reported at very low frequency in the synthetic reference population.
+Functional study: synthetic cell-based assay reports substantially reduced protein activity compared with the reference sequence.
+Computational analysis: three synthetic prediction tools indicate a potentially disruptive effect.
+Experimental study: an independent synthetic assay reports a similar reduction in protein function.
+
+source_label:
+SYNTHETIC_POPULATION_01, SYNTHETIC_FUNCTIONAL_01, SYNTHETIC_COMPUTATIONAL_01, SYNTHETIC_FUNCTIONAL_02
+
+missing_fields:
+
+Exact experimental conditions for one functional assay
+Independent replication details
+
+conflicts:
+None identified.
+Case 02 — Consistent Non-Supporting Evidence- Modify
+
+case_id: GEA-002
+
+gene: SYN2
+
+synthetic_variant: SYN2:c.812G>T
+
+context:
+Educational case testing whether the system can recognize that available evidence does not support a proposed functional effect.
+
+evidence_items:
+
+Population dataset: variant occurs relatively frequently in the synthetic reference population.
+Functional assay: synthetic protein-expression experiment reports no meaningful difference from reference.
+Independent functional assay: synthetic activity assay reports activity within the predefined reference range.
+Computational predictions: results are mixed but do not provide consistent evidence of functional disruption.
+
+source_label:
+SYNTHETIC_POPULATION_02, SYNTHETIC_FUNCTIONAL_03, SYNTHETIC_FUNCTIONAL_04, SYNTHETIC_COMPUTATIONAL_02
+
+missing_fields:
+
+Additional independent functional experiments
+Detailed population stratification
+
+conflicts:
+No major conflict. Computational predictions differ from one another but are not directly contradictory experimental findings.
+Case 03 — Critical Missing Evidence- Accept
+
+case_id: GEA-003
+
+gene: SYN3
+
+synthetic_variant: SYN3:c.1045C>T
+
+context:
+Educational case testing whether the system recognizes that an evidence packet is incomplete rather than filling the gap with an assumption.
+
+evidence_items:
+
+Computational evidence predicts a possible effect on protein function.
+A synthetic literature search identifies the gene as biologically relevant to the research question.
+Population information is unavailable for the synthetic reference dataset.
+No synthetic functional study directly evaluates this variant.
+
+source_label:
+SYNTHETIC_COMPUTATIONAL_03, SYNTHETIC_BACKGROUND_01, SYNTHETIC_POPULATION_MISSING_01
+
+missing_fields:
+
+Variant-specific functional evidence
+Population-frequency information
+Experimental validation
+Relevant segregation/inheritance observations
+
+conflicts:
+None identified.
