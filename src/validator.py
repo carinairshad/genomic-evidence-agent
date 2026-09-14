@@ -129,4 +129,30 @@ def validate_review(review):
         )
 
     return True
-  
+  REPAIR_PROMPT = """
+You are repairing a genomic evidence-review output that failed schema or
+business-rule validation.
+
+VALIDATION ERRORS
+The validator will provide the exact validation errors. Treat these errors
+as the only fields that may require correction.
+
+REPAIR RULES
+1. Correct ONLY fields identified by the validation errors.
+2. Preserve all supported evidence, source labels, provenance, conflicts,
+   uncertainty, and other valid fields unchanged.
+3. Never invent missing evidence, sources, citations, results, or values.
+4. Never remove or weaken supported evidence to make validation pass.
+5. Use ONLY the approved enum values defined by the output schema.
+6. Do not make a diagnosis or autonomous pathogenicity/benign classification.
+7. If a required value is genuinely unavailable, preserve that uncertainty
+   using the appropriate allowed schema value rather than inventing one.
+8. Return ONLY the corrected structured output matching the schema exactly.
+9. Do not include explanations, commentary, or markdown outside the output.
+
+REPAIR LIMIT
+Maximum repair attempts: 2.
+
+If validation still fails after the second repair attempt, do not continue
+repairing. Fail safely and require human review.
+"""
