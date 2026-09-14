@@ -108,3 +108,81 @@ result = run_review("GEA-003")
 
 print("\nFINAL RESULT")
 print(result)
+def check_stop_condition(state):
+    """
+    Determine whether the evidence-review workflow should stop.
+
+    Input:
+        state (dict): Current state of the evidence review.
+
+    Output:
+        dict containing:
+            stop (bool)
+            stop_state (str)
+            status (str)
+            next_action (str)
+    """
+
+    # ---------------------------------------------------------
+    # 1. Human review takes priority.
+    # ---------------------------------------------------------
+
+    if state.get("human_review_required", False):
+        return {
+            "stop": True,
+            "stop_state": "HUMAN_REVIEW_REQUIRED",
+            "status": "HUMAN_REVIEW_REQUIRED",
+            "next_action": "STOP_AND_REVIEW",
+        }
+
+    # ---------------------------------------------------------
+    # 2. A source conflict requires review.
+    # ---------------------------------------------------------
+
+    if state.get("conflicts"):
+        return {
+            "stop": True,
+            "stop_state": "SOURCE_CONFLICT",
+            "status": "CONFLICT_REQUIRES_REVIEW",
+            "next_action": "INVESTIGATE_CONFLICT",
+        }
+
+    # ---------------------------------------------------------
+    # 3. Missing evidence means the workflow is incomplete.
+    # ---------------------------------------------------------
+
+    if state.get("missing_evidence"):
+        return {
+            "stop": True,
+            "stop_state": "MISSING_DATA",
+            "status": "CRITICAL_EVIDENCE_MISSING",
+            "next_action": "REQUEST_MISSING_EVIDENCE",
+        }
+
+    # ---------------------------------------------------------
+    # 4. If the case, evidence and completeness check are
+    #    finished, the evidence packet is complete.
+    # ---------------------------------------------------------
+
+    if (
+        state.get("case") is not None
+        and state.get("evidence") is not None
+        and state.get("missing_evidence") == []
+    ):
+        return {
+            "stop": True,
+            "stop_state": "SUCCESS",
+            "status": "EVIDENCE_PACKET_COMPLETE",
+            "next_action": "STOP_AND_REVIEW",
+        }
+
+    # ---------------------------------------------------------
+    # 5. Otherwise, continue the workflow.
+    # ---------------------------------------------------------
+
+    return {
+        "stop": False,
+        "stop_state": None,
+        "status": "IN_PROGRESS",
+        "next_action": None,
+    }
