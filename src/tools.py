@@ -59,3 +59,42 @@ def retrieve_evidence(case_id):
         raise ValueError(f"No evidence found for case '{case_id}'.")
 
     return matching_evidence
+def check_evidence_completeness(case, evidence):
+    """
+    Check whether the case has the required evidence categories.
+
+    Input:
+        case (dict): The case information from cases.json.
+        evidence (list): Evidence items from evidence.json.
+
+    Output:
+        list: Evidence categories that are missing.
+    """
+
+    # These are the evidence categories we require for this prototype.
+    required_categories = [
+        "population",
+        "functional",
+        "computational",
+        "segregation",
+    ]
+
+    # Start with an empty list of missing categories.
+    missing = []
+
+    # Check each required category.
+    for category in required_categories:
+
+        # Look for at least one evidence item with this category.
+        found = False
+
+        for item in evidence:
+            if item.get("evidence_type") == category:
+                found = True
+                break
+
+        # If the category was not found, add it to the missing list.
+        if not found:
+            missing.append(category)
+
+    return missing
