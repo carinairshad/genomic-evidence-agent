@@ -5,3 +5,4 @@ Day 2, list case IDs
  case_id, gene, variant, evidence_supporting, evidence_against, missing_evidence, conflicts, provenance, status, confidence, next_action, human_review_required.
 day 3
 day 4
+day 5
